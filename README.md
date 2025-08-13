@@ -1,52 +1,58 @@
-🏌️ Implémentation d'un système RAG pour les règles du golf avec LangChain
-📋 Description
-Développer un système de Retrieval-Augmented Generation (RAG) utilisant LangChain pour permettre aux golfeurs de poser des questions en langage naturel sur les règles officielles du golf et obtenir des réponses précises et citées.
-🎯 Objectifs
+# 🏌️ Implémentation d'un système RAG pour les règles du golf avec LangChain
 
- Créer un chatbot intelligent spécialisé dans les règles du golf
- Permettre la recherche sémantique dans la documentation officielle
- Fournir des réponses précises avec citations des règles exactes
- Support multilingue (français/anglais minimum)
- Interface utilisateur intuitive (web + API)
+## 📋 Description
 
-📊 Données nécessaires
-📚 Sources de données principales
-Documents officiels requis
+Développer un système de **Retrieval-Augmented Generation (RAG)** utilisant LangChain pour permettre aux golfeurs de poser des questions en langage naturel sur les règles officielles du golf et obtenir des réponses précises et citées.
 
-Règles officielles du golf 2023 (R&A + USGA)
+## 🎯 Objectifs
 
-Format : PDF (~200 pages)
-Langue : Français + Anglais
-Contenu : 24 règles principales + définitions
-Source : R&A Official Rules
+- [x] Créer un chatbot intelligent spécialisé dans les règles du golf
+- [x] Permettre la recherche sémantique dans la documentation officielle
+- [x] Fournir des réponses précises avec citations des règles exactes
+- [x] Support multilingue (français/anglais minimum)
+- [x] Interface utilisateur intuitive (web + API)
 
+## 📊 Données nécessaires
 
-Decisions on the Rules of Golf
+### 📚 Sources de données principales
 
-Format : PDF (~150 pages)
-Contenu : Interprétations officielles et cas pratiques
-Mise à jour : Trimestrielle
+#### Documents officiels requis
+- **Règles officielles du golf 2023** (R&A + USGA)
+  - Format : PDF (~200 pages)
+  - Langue : Français + Anglais
+  - Contenu : 24 règles principales + définitions
+  - Source : [R&A Official Rules](https://www.randa.org/en/rog)
 
+- **Decisions on the Rules of Golf** 
+  - Format : PDF (~150 pages)
+  - Contenu : Interprétations officielles et cas pratiques
+  - Mise à jour : Trimestrielle
 
-Player's Edition (version simplifiée)
+- **Player's Edition** (version simplifiée)
+  - Format : PDF (~50 pages)
+  - Public cible : Golfeurs amateurs
+  - Contenu : Règles essentielles vulgarisées
 
-Format : PDF (~50 pages)
-Public cible : Golfeurs amateurs
-Contenu : Règles essentielles vulgarisées
+#### Documents complémentaires
+- **Règles locales types** (~30 pages)
+- **Code de conduite et étiquette** (~20 pages)
+- **Glossaire des termes techniques** (~500 définitions)
+- **FAQ officielles** (~100 Q&R)
 
+### 📈 Volume de données estimé
 
+| Type de document | Nombre | Pages totales | Tokens estimés | Chunks (500 tokens) |
+|------------------|---------|---------------|----------------|---------------------|
+| Règles officielles | 2 (FR/EN) | ~400 | ~200,000 | ~400 |
+| Decisions | 2 (FR/EN) | ~300 | ~150,000 | ~300 |
+| Player's Edition | 2 (FR/EN) | ~100 | ~50,000 | ~100 |
+| Docs complémentaires | 4 | ~140 | ~70,000 | ~140 |
+| **TOTAL** | **10** | **~940** | **~470,000** | **~940** |
 
-Documents complémentaires
+### 🏷️ Métadonnées par chunk
 
-Règles locales types (~30 pages)
-Code de conduite et étiquette (~20 pages)
-Glossaire des termes techniques (~500 définitions)
-FAQ officielles (~100 Q&R)
-
-📈 Volume de données estimé
-Type de documentNombrePages totalesTokens estimésChunks (500 tokens)Règles officielles2 (FR/EN)~400~200,000~400Decisions2 (FR/EN)~300~150,000~300Player's Edition2 (FR/EN)~100~50,000~100Docs complémentaires4~140~70,000~140TOTAL10~940~470,000~940
-🏷️ Métadonnées par chunk
-json{
+```json
+{
   "rule_number": "14.3",
   "rule_title": "Balle artificiellement déviée ou arrêtée",
   "category": "jeu_de_la_balle",
@@ -59,33 +65,25 @@ json{
   "last_updated": "2023-01-01",
   "keywords": ["balle_deviee", "obstruction", "penalite"]
 }
-🗂️ Dataset de test et validation
-Questions de référence (150 minimum)
-Répartition par catégorie
+```
 
-Règles de base (30%) : 45 questions
+## 🗂️ Dataset de test et validation
 
-Exemple : "Que faire si ma balle tombe dans un obstacle d'eau ?"
+### Questions de référence (150 minimum)
 
+#### Répartition par catégorie
+- **Règles de base** (30%) : 45 questions
+  - Exemple : *"Que faire si ma balle tombe dans un obstacle d'eau ?"*
+- **Situations complexes** (40%) : 60 questions  
+  - Exemple : *"Puis-je nettoyer ma balle sur le green après l'avoir relevée ?"*
+- **Pénalités** (20%) : 30 questions
+  - Exemple : *"Combien de coups de pénalité si je joue la mauvaise balle ?"*
+- **Équipement et étiquette** (10%) : 15 questions
+  - Exemple : *"Combien de clubs maximum puis-je transporter ?"*
 
-Situations complexes (40%) : 60 questions
-
-Exemple : "Puis-je nettoyer ma balle sur le green après l'avoir relevée ?"
-
-
-Pénalités (20%) : 30 questions
-
-Exemple : "Combien de coups de pénalité si je joue la mauvaise balle ?"
-
-
-Équipement et étiquette (10%) : 15 questions
-
-Exemple : "Combien de clubs maximum puis-je transporter ?"
-
-
-
-Format des données de test
-json{
+#### Format des données de test
+```json
+{
   "id": "test_001",
   "question": "Que faire si ma balle est injouable ?",
   "context_rules": ["19.1", "19.2", "19.3"],
@@ -94,105 +92,113 @@ json{
   "category": "relief",
   "language": "fr"
 }
-Données de benchmarking
+```
 
-Temps de réponse : < 3 secondes par requête
-Précision de récupération : > 85% (top-5)
-Qualité des réponses : Score RAGAS > 0.8
-Taux d'hallucination : < 5%
+### Données de benchmarking
+- **Temps de réponse** : < 3 secondes par requête
+- **Précision de récupération** : > 85% (top-5)
+- **Qualité des réponses** : Score RAGAS > 0.8
+- **Taux d'hallucination** : < 5%
 
-🛠️ Spécifications techniques
-Stack technologique
+## 🛠️ Spécifications techniques
 
-Framework : LangChain + FastAPI
-LLM : GPT-4 / Claude-3 / Mistral-7B
-Embeddings : sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-Vector Store : ChromaDB (dev) / Pinecone (prod)
-Interface : Streamlit + API REST
+### Stack technologique
+- **Framework** : LangChain + FastAPI
+- **LLM** : GPT-4 / Claude-3 / Mistral-7B
+- **Embeddings** : `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`
+- **Vector Store** : ChromaDB (dev) / Pinecone (prod)
+- **Interface** : Streamlit + API REST
 
-Architecture de chunking
-python# Stratégie recommandée
+### Architecture de chunking
+```python
+# Stratégie recommandée
 CHUNK_SIZE = 500  # tokens
 CHUNK_OVERLAP = 50  # tokens
 SPLITTING_STRATEGY = "by_rule_section"  # Par règle et sous-section
 METADATA_EXTRACTION = True
-📝 Critères d'acceptation
-Fonctionnels
+```
 
- Le système peut répondre à 95% des questions du dataset de test
- Les réponses incluent systématiquement la citation de la règle exacte
- Support des questions en français et anglais
- Interface web fonctionnelle avec historique des conversations
- API REST documentée avec endpoints CRUD
+## 📝 Critères d'acceptation
 
-Non-fonctionnels
+### Fonctionnels
+- [ ] Le système peut répondre à 95% des questions du dataset de test
+- [ ] Les réponses incluent systématiquement la citation de la règle exacte
+- [ ] Support des questions en français et anglais
+- [ ] Interface web fonctionnelle avec historique des conversations
+- [ ] API REST documentée avec endpoints CRUD
 
- Temps de réponse < 3 secondes pour 95% des requêtes
- Disponibilité > 99% (monitoring inclus)
- Support de 10 utilisateurs simultanés minimum
- Code documenté et tests unitaires > 80% de couverture
+### Non-fonctionnels  
+- [ ] Temps de réponse < 3 secondes pour 95% des requêtes
+- [ ] Disponibilité > 99% (monitoring inclus)
+- [ ] Support de 10 utilisateurs simultanés minimum
+- [ ] Code documenté et tests unitaires > 80% de couverture
 
-Qualité des réponses
+### Qualité des réponses
+- [ ] Précision factuelle vérifiée sur échantillon de 50 questions
+- [ ] Pas d'hallucination sur les numéros de règles
+- [ ] Réponses adaptées au niveau de l'utilisateur (débutant/expert)
+- [ ] Gestion des cas où aucune règle ne s'applique
 
- Précision factuelle vérifiée sur échantillon de 50 questions
- Pas d'hallucination sur les numéros de règles
- Réponses adaptées au niveau de l'utilisateur (débutant/expert)
- Gestion des cas où aucune règle ne s'applique
+## 📋 Tâches de développement
 
-📋 Tâches de développement
-Phase 1 : Fondations (2 semaines)
+### Phase 1 : Fondations (2 semaines)
+- [ ] Setup du projet et architecture
+- [ ] Collecte et preprocessing des documents PDF
+- [ ] Implémentation du pipeline d'ingestion
+- [ ] Configuration de la base vectorielle
 
- Setup du projet et architecture
- Collecte et preprocessing des documents PDF
- Implémentation du pipeline d'ingestion
- Configuration de la base vectorielle
+### Phase 2 : RAG Core (2 semaines)  
+- [ ] Développement du système de récupération
+- [ ] Intégration du LLM et prompt engineering
+- [ ] Tests sur dataset de validation
+- [ ] Optimisation des hyperparamètres
 
-Phase 2 : RAG Core (2 semaines)
+### Phase 3 : Interface et API (1 semaine)
+- [ ] Développement de l'API REST
+- [ ] Interface Streamlit
+- [ ] Documentation Swagger/OpenAPI
+- [ ] Tests d'intégration
 
- Développement du système de récupération
- Intégration du LLM et prompt engineering
- Tests sur dataset de validation
- Optimisation des hyperparamètres
+### Phase 4 : Déploiement (1 semaine)
+- [ ] Containerisation Docker
+- [ ] Configuration CI/CD
+- [ ] Monitoring et logging
+- [ ] Tests de charge
 
-Phase 3 : Interface et API (1 semaine)
+## 🔍 Métriques de succès
 
- Développement de l'API REST
- Interface Streamlit
- Documentation Swagger/OpenAPI
- Tests d'intégration
+| Métrique | Cible | Méthode de mesure |
+|----------|-------|-------------------|
+| Précision des réponses | >90% | Évaluation humaine sur 100 questions |
+| Temps de réponse | <3s | Monitoring automatique |
+| Satisfaction utilisateur | >4/5 | Sondage post-utilisation |
+| Taux de résolution | >85% | Questions résolues sans intervention humaine |
 
-Phase 4 : Déploiement (1 semaine)
+## 🚧 Risques et limitations
 
- Containerisation Docker
- Configuration CI/CD
- Monitoring et logging
- Tests de charge
+### Risques techniques
+- **Qualité des PDFs** : Extraction de texte défaillante
+- **Multilinguisme** : Différences entre versions FR/EN des règles  
+- **Mise à jour** : Synchronisation avec nouvelles versions des règles
+- **Coût LLM** : Budget API pour GPT-4
 
-🔍 Métriques de succès
-MétriqueCibleMéthode de mesurePrécision des réponses>90%Évaluation humaine sur 100 questionsTemps de réponse<3sMonitoring automatiqueSatisfaction utilisateur>4/5Sondage post-utilisationTaux de résolution>85%Questions résolues sans intervention humaine
-🚧 Risques et limitations
-Risques techniques
+### Limitations connues
+- Pas de support pour règles locales spécifiques aux clubs
+- Questions sur l'historique des règles non supportées
+- Interprétations subjectives non gérées
 
-Qualité des PDFs : Extraction de texte défaillante
-Multilinguisme : Différences entre versions FR/EN des règles
-Mise à jour : Synchronisation avec nouvelles versions des règles
-Coût LLM : Budget API pour GPT-4
+## 📞 Points de contact
 
-Limitations connues
+- **Product Owner** : @username_po
+- **Tech Lead** : @username_tech  
+- **Golf Expert** : @username_expert (validation des réponses)
 
-Pas de support pour règles locales spécifiques aux clubs
-Questions sur l'historique des règles non supportées
-Interprétations subjectives non gérées
+## 🏷️ Labels
 
-📞 Points de contact
+`enhancement` `rag` `langchain` `golf` `nlp` `high-priority`
 
-Product Owner : @username_po
-Tech Lead : @username_tech
-Golf Expert : @username_expert (validation des réponses)
+---
 
-🏷️ Labels
-enhancement rag langchain golf nlp high-priority
-
-Effort estimé : 6 semaines développeur
-Priorité : High
-Milestone : v1.0 - MVP RAG Golf
+**Effort estimé** : 6 semaines développeur  
+**Priorité** : High  
+**Milestone** : v1.0 - MVP RAG Golf
