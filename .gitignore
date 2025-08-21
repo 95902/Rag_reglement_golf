@@ -1,0 +1,19 @@
+# Ignorer les fichiers et dossiers spécifiques au projet
+docs/
+.env
+chroma_db/
+
+# Ignorer les fichiers générés par Python
+__pycache__/
+*.py[cod]
+
+# Ignorer les fichiers de logs
+*.log
+
+# Ignorer les fichiers de configuration spécifiques à l'IDE
+.vscode/
+.idea/
+
+# Ignorer les fichiers générés par les environnements virtuels
+.venv/
+env/
